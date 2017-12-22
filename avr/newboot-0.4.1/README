@@ -1,0 +1,61 @@
+newboot - an AVR MMC/SD boot loader compatible with HolgerBootloader2
+Based on a heavily modified version of ChaN's FatFs library
+
+Copyright (C) 2011  Ingo Korb <ingo@akana.de>
+All rights reserved.
+
+
+Notes on use
+============
+This boot loader searches for files with the correct length in the root
+directory of the card. It does not care about file names at all,
+instead it checks a tag at the end of the file to determine if it
+should flash a file or not. The boot loader will only flash a file
+that is tagged for the correct hardware and that has either
+a) a version number that is greater than the one currently in memory
+or
+b) a special version number that designates the file as a "development
+   version".
+
+In case b) the boot loader will avoid flashing the same file over and
+over again, but a development version file with a different checksum
+will get flashed, as well as any non-development version if the
+program version currently in the chip.
+
+FAT16 and FAT32 are always supported, FAT12 only if enabled. MMC, SD
+and SDHC cards with a supported file system should all work.
+
+The boot loader turns on the red LED while it is running. If it
+cannot find a valid application in the chip, it will flash the red LED
+for two seconds and try to find a valid file once more. During card
+accesses the green LED is on, during the actual flash operation the
+green LED flickers rapidly.
+
+
+FIXME: Add notes on compiling and adapting for other hardware
+
+Licence
+=======
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. Neither the name of the University nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
